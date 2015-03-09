@@ -16,6 +16,35 @@ import sys
 import pickle
 import nltk.corpus, nltk.tag, itertools  
 from terminal_colors import Tcolors
+from nltk.tag.stanford import POSTagger
+
+
+class StanfordPOSTagger:
+    """
+        Stanford POS Tagger wrapper for Java implemetation:
+        http://nlp.stanford.edu/software/tagger.shtml
+    """
+
+    def __init__(self, models='english-bidirectional-distsim.tagger'):
+        full_path = os.path.dirname(os.path.abspath(__file__))
+        stanford_path = os.path.join(full_path, 'stanford-postagger')
+        pos_models = os.path.join(stanford_path, 'models/',
+                                  models)
+
+        pos_jar = os.path.join(stanford_path, 'stanford-postagger.jar')
+        self.pos_tagger = POSTagger(
+            pos_models, pos_jar)
+        print Tcolors.ADD + Tcolors.OKBLUE + " Loaded Stanford POS Tagger!" + \
+              Tcolors.ENDC
+
+    def tag(self, sentence):
+        """
+            Method for tagging untagged sentences.
+        """
+        words = nltk.word_tokenize(sentence)
+        return self.pos_tagger.tag(words)
+
+
 
 class SequentialTagger:
     """
@@ -27,8 +56,9 @@ class SequentialTagger:
         combinations.
     """
     def __init__(self): 
-    
-        self.filename = "stored/ubt_tagger.classifier"
+        full_path = os.path.dirname(os.path.abspath(__file__))
+
+        self.filename = os.path.join(full_path, "stored/ubt_tagger.classifier")
         try: 
             self.ubt_tagger = pickle.load(open(self.filename)) 
             print Tcolors.ADD + Tcolors.OKBLUE + " Loaded existing UBT tagger!" + Tcolors.ENDC 

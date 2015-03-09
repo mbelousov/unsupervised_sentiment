@@ -31,9 +31,9 @@ class Sentiment:
         subjectivity and polarity classification. All sub modules except 
         from POS tagging are learning by experience.
     """
-    
-    def __init__(self):
-        self.pos_tagger = SequentialTagger()
+
+    def __init__(self, pos_tagger_class=SequentialTagger):
+        self.pos_tagger = pos_tagger_class()
         self.hp_obj = HpObj(debug=DEBUG)
         self.hp_subj = HpSubj(debug=DEBUG)
         self.lexicon = self.hp_obj.lexicon
@@ -210,9 +210,10 @@ class Sentiment:
         l_output.close()
 
 
-if __name__ == '__main__':       
-    sentiment = Sentiment()
+if __name__ == '__main__':
+    from pos import StanfordPOSTagger
+    sentiment = Sentiment(pos_tagger_class=StanfordPOSTagger)
     if len(sys.argv) > 1:
         sentiment.analyze([sys.argv[1]]) 
     else:
-        sentiment.analyze([u"I was blown away by some of the comments here posted by people who is either uneducated, ignorant, self-righteous or all-of-the-above...I'm irritated and saddened as I read these \"finger-pointing\" or \"I'm right and you're wrong\" type of posts! Grow up folks! You're not in grade school...learn to embrace what is positive and move forward to do what is right... I have to give much love and respect to Ronny...your work is AMAZING!!! You cannot fathom how good I feel after I watched this video...regardless of history, politics, or whatever forces that makes what the mid-east today...for what you did and many of the followers in Iran and Palestine ...I BELIEVE TOMORROW WILL BE BETTER!!!!!! My name is Christopher Lee, I'm a nurse in Los Angeles and I {HEART} YOU ALL (especially to all of you beautiful and sweet ladies across the way)!!!!!"])      
+        sentiment.analyze([u"I was blown away by some of the comments here posted by people who is either uneducated, ignorant, self-righteous or all-of-the-above...I'm irritated and saddened as I read these \"finger-pointing\" or \"I'm right and you're wrong\" type of posts! Grow up folks! You're not in grade school...learn to embrace what is positive and move forward to do what is right... I have to give much love and respect to Ronny...your work is AMAZING!!! You cannot fathom how good I feel after I watched this video...regardless of history, politics, or whatever forces that makes what the mid-east today...for what you did and many of the followers in Iran and Palestine ...I BELIEVE TOMORROW WILL BE BETTER!!!!!! My name is Christopher Lee, I'm a nurse in Los Angeles and I {HEART} YOU ALL (especially to all of you beautiful and sweet ladies across the way)!!!!!"])
