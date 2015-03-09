@@ -15,6 +15,7 @@ import os
 import sys
 import nltk
 import pickle
+import re
 from bootstrapping import Bootstrapping
 from pos import SequentialTagger
 from hp_classifiers import HpObj, HpSubj
@@ -62,9 +63,9 @@ class Sentiment(object):
                 sentiments = [] 
                 scores = []
                 nscores = []
-                results = {'positive':{'count' : 0, 'score' : 0, 'nscore' : 0},
-                           'neutral':{'count' : 0, 'score' : 0, 'nscore' : 0},
-                           'negative':{'count' : 0, 'score' : 0, 'nscore' : 0}}
+                results = {'positive': {'count': 0, 'score': 0, 'nscore': 0},
+                           'neutral': {'count': 0, 'score': 0, 'nscore': 0},
+                           'negative': {'count': 0, 'score': 0, 'nscore': 0}}
                 
                 print
                 print Tcolors.ACT + " Checking block of text:"
@@ -178,7 +179,20 @@ class Sentiment(object):
         # Train SVM classifier
         # self.train_svm()
         return total_result_hash
-    
+
+    def remove_emoji(self, text):
+        if isinstance(text, str):
+            text = text.decode("utf-8", "ignore")
+        try:
+            highpoints = re.compile(u'[\U00010000-\U0010ffff]')
+        except re.error:
+            highpoints = re.compile(u'[\uD800-\uDBFF][\uDC00-\uDFFF]')
+
+        text = highpoints.sub(u'', text)
+        return text
+
+
+
     def normalize(self, text):
         """
             Make some word improvements before feeding to the sentence tokenizer.
@@ -196,7 +210,8 @@ class Sentiment(object):
                 final = " ".join(normalized_text)
         except:
                 final = text
-    
+
+        final = self.remove_emoji(final)
         return final
                 
     def train_svm(self):
