@@ -151,7 +151,9 @@ class Sentiment:
                 confidence = " (%.2f, %.2f)" % (ssum,sum(nscores))
                 final_sent = ""
                 pos = True
-                if results["negative"]["count"] > len(sentences)*1.0/3:
+                if len(sentences) > 2 and \
+                                results["negative"]["count"] > len(
+                                sentences) * 1.0 / 3:
                     pos = False
 
                 # Print total sentiment score and normalized sentiment score
