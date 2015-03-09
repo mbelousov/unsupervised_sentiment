@@ -43,9 +43,8 @@ http://www.pip-installer.org/en/latest/
 After installing them, you should be able to install the following packages: <br />
 ```bash
 $ pip install nltk  
-$ pip install stemmer 
+$ pip install stemming
 $ pip install numpy
-$ pip install pickle 
 ```
 
 After you install nltk you will need some corpora to train the sequential POS tagger (pos.py) and the nltk tokenizer.
