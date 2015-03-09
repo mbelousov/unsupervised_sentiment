@@ -33,7 +33,7 @@ class StanfordPOSTagger:
 
         pos_jar = os.path.join(stanford_path, 'stanford-postagger.jar')
         self.pos_tagger = POSTagger(
-            pos_models, pos_jar)
+            pos_models, pos_jar, encoding='utf-8')
         print Tcolors.ADD + Tcolors.OKBLUE + " Loaded Stanford POS Tagger!" + \
               Tcolors.ENDC
 
