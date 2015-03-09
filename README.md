@@ -1,5 +1,19 @@
 unsupervised_sentiment
 ======================
+## Fork contributions
+* Wrapped into package so that it could be easily installed with ```easy_install``` or ```pip```.
+* Polarity shifting improvements.
+
+### Stanford POS Tagger Example
+```python
+from unsupervised_sentiment.sentiment import Sentiment
+from unsupervised_sentiment.pos import StanfordPOSTagger
+sent_classifier = Sentiment(pos_tagger_class=StanfordPOSTagger)
+
+sent_classifier.analyze(['I hear voices and it is pretty scary.'])
+```
+## Original version
+
 The attached code is an implementation of an unsupervised sentiment classification procedure that was used originally for an opinion mining
 and retrieval system (1st paper below) and for improving one-class collaborative filtering (2nd paper below). For the 2nd paper
 I have included a folder called "TED_comment_annotations" that contains the files of the human study we conducted on TED 
