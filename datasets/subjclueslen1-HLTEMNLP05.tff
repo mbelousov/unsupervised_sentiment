@@ -5781,7 +5781,7 @@ type=strongsubj len=1 word1=pretense pos1=noun stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=pretentious pos1=anypos stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=pretentiously pos1=anypos stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=prettily pos1=anypos stemmed1=n priorpolarity=positive
-type=strongsubj len=1 word1=pretty pos1=anypos stemmed1=n priorpolarity=positive
+type=strongsubj len=1 word1=pretty pos1=adj stemmed1=n priorpolarity=positive
 type=weaksubj len=1 word1=prevalent pos1=adj stemmed1=n priorpolarity=neutral
 type=strongsubj len=1 word1=prevaricate pos1=verb stemmed1=y priorpolarity=negative
 type=strongsubj len=1 word1=priceless pos1=adj stemmed1=n priorpolarity=positive
