@@ -179,23 +179,34 @@ class PolarityClassifier:
         else:
             return "anypos"
     
-    def negation_modeling(self):
+    def negation_modeling(self, use_tags=True):
         """
         Examine negation words and reassign polarity.
         """
         for polar in self.polar_expressions:
+            polar_idx = self.words.index(polar)
+            polar_score = self.polar_with_score[polar]
             has_precedings = self.check_precedings(polar, self.words)
             for neg in self.negation_words:
-                if has_precedings: 
-                    if (neg in self.words[(self.words.index(polar)-5):self.words.index(polar)])\
-                       or self.polarity_shifting(polar, self.words[(self.words.index(polar)-5):self.words.index(polar)]):
-                        self.polar_with_score[polar] = self.polar_with_score[polar]*(-1)
-                        break
+                if has_precedings:
+                    slice_start = polar_idx - 5
+                    slice_end = polar_idx
                 else:
-                    if neg in self.words[0:self.words.index(polar)] or \
-                       self.polarity_shifting(polar, self.words[0:self.words.index(polar)]):
-                        self.polar_with_score[polar] = self.polar_with_score[polar]*(-1)
-                          
+                    slice_start = 0
+                    slice_end = polar_idx
+
+                words_slice = self.words[slice_start:slice_end]
+                if use_tags:
+                    tags_slice = self.words_pos_tags[slice_start:slice_end]
+                    shift = self.polarity_shifting_with_tags(polar, tags_slice)
+                else:
+                    shift = self.polarity_shifting(polar, words_slice)
+
+                if (neg in words_slice) or shift:
+                    self.polar_with_score[polar] = polar_score * (-1)
+                    if has_precedings:
+                        break
+
     def predict_class(self):
         summary = 0
         summary = sum([value for value in self.polar_with_score.values()])
@@ -208,6 +219,25 @@ class PolarityClassifier:
         else:
             return "neutral", summary
     
+    def polarity_shifting_with_tags(self, polar, words_pos_tags):
+
+        for (word, TAG) in words_pos_tags:
+            matched_tag = self.match_tags(TAG)
+            if ((self.lexicon.has_key(word)
+                 and (matched_tag in self.lexicon[word]["pos1"]
+                      or self.lexicon[word]["pos1"][0] == "anypos"
+                      or matched_tag == "anypos")
+                 and self.lexicon[word]["type"] == "strongsubj"
+                 and self.lexicon[word]["priorpolarity"] !=
+                    self.lexicon[polar]["priorpolarity"]
+                 and self.lexicon[word]["priorpolarity"] != "neutral")
+                or word.endswith("n't")):
+                    # reverse polarity of polar
+                    if self.debug:
+                        print "[!] NEGATION WORD FOUND: ",word
+                    return True
+
+            return False
     def polarity_shifting(self, polar, words):
         for word in words:
             if (self.lexicon.has_key(word) and self.lexicon[word]["type"]=="strongsubj" \
