@@ -22,7 +22,6 @@ from polarity import PolarityClassifier
 from replacer import RepeatReplacer
 from terminal_colors import Tcolors
 
-DEBUG = False
 
 class Sentiment:
     """
@@ -32,12 +31,13 @@ class Sentiment:
         from POS tagging are learning by experience.
     """
 
-    def __init__(self, pos_tagger_class=SequentialTagger):
+    def __init__(self, debug=False, pos_tagger_class=SequentialTagger):
+        self.debug = debug
         self.pos_tagger = pos_tagger_class()
-        self.hp_obj = HpObj(debug=DEBUG)
-        self.hp_subj = HpSubj(debug=DEBUG)
+        self.hp_obj = HpObj(debug=self.debug)
+        self.hp_subj = HpSubj(debug=self.debug)
         self.lexicon = self.hp_obj.lexicon
-        self.bootstrapping = Bootstrapping(self.hp_obj, self.hp_subj, self.pos_tagger, debug=DEBUG) 
+        self.bootstrapping = Bootstrapping(self.hp_obj, self.hp_subj, self.pos_tagger, debug=self.debug)
         self.sentence_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         self.total_sentences = ["good","bad"]
         self.total_sentiments = ["positive","negative"]
@@ -85,23 +85,23 @@ class Sentiment:
                             next = sentences[i+1]
                         previous = sentences[i-1] 
                      
-                    if DEBUG: print Tcolors.ACT + " Analyzing subjectivity..." 
+                    if self.debug: print Tcolors.ACT + " Analyzing subjectivity..."
                     result = self.bootstrapping.classify(sentence, previous, next) 
                     if result is None:
                         res = 'Not found!'
                     else:
                         res = result
-                    if DEBUG:
+                    if self.debug:
                         print Tcolors.RES + Tcolors.OKGREEN + " " + res + Tcolors.ENDC
                         print
                     
                     # If sentence is subjective 
                     if result == 'subjective' or result is None:
                         # Proceed to polarity classification
-                        if DEBUG: print Tcolors.ACT + " Analyzing sentiment..."
-                        polarity_classifier = PolarityClassifier(self.pos_tagger, self.lexicon, debug=DEBUG)
+                        if self.debug: print Tcolors.ACT + " Analyzing sentiment..."
+                        polarity_classifier = PolarityClassifier(self.pos_tagger, self.lexicon, debug=self.debug)
                         sentiment, score, nscore = polarity_classifier.classify(sentence)
-                        if DEBUG: print Tcolors.RES + Tcolors.OKGREEN + " " + sentiment + Tcolors.ENDC
+                        if self.debug: print Tcolors.RES + Tcolors.OKGREEN + " " + sentiment + Tcolors.ENDC
                     # If sentence is objective
                     elif result == 'objective':
                         sentiment = 'neutral'  
@@ -209,10 +209,9 @@ class Sentiment:
         t_output.close()
         l_output.close()
 
-
 if __name__ == '__main__':
     from pos import StanfordPOSTagger
-    sentiment = Sentiment(pos_tagger_class=StanfordPOSTagger)
+    sentiment = Sentiment(pos_tagger_class=StanfordPOSTagger, debug=True)
     if len(sys.argv) > 1:
         sentiment.analyze([sys.argv[1]]) 
     else:

@@ -297,7 +297,6 @@ if __name__ == "__main__":
     hp_subj = HpSubj()  
     tagger = SequentialTagger()
     bootstrapping = Bootstrapping(hp_obj, hp_subj, tagger)
-    if self.debug:
-        print bootstrapping.classify(sys.argv[1])
+    print bootstrapping.classify(sys.argv[1])
         
         
