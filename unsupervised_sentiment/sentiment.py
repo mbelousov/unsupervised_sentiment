@@ -23,7 +23,7 @@ from replacer import RepeatReplacer
 from terminal_colors import Tcolors
 
 
-class Sentiment:
+class Sentiment(object):
     """
         Sentiment: Analyses the global sentiment of given text regions  
         that are decomposed to sentences, using bootstrapping methods for 
