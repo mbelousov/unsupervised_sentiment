@@ -42,17 +42,17 @@ class Sentiment(object):
         self.sentence_tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         self.total_sentences = ["good","bad"]
         self.total_sentiments = ["positive","negative"]
-        
+
     def analyze(self, clean_text_areas):
         """
             Analysis of text regions using the following order: Each sentence per
             region is passed from the subjectivity classification using bootstrapping
-            method and then if it turns out to be subjective it is passed 
+            method and then if it turns out to be subjective it is passed
             from the polarity classification using bootstrapping method also.
             Finally, it results to a decision for the sentiment of the sentence
-            and the overall sentiment of the regions. 
-        """ 
-        if len(clean_text_areas) > 0:  
+            and the overall sentiment of the regions.
+        """
+        if len(clean_text_areas) > 0:
             for clean_text in clean_text_areas:
                 # Sentence detection
                 clean_text = self.normalize(clean_text)
@@ -60,13 +60,13 @@ class Sentiment(object):
                     sentences = self.sentence_tokenizer.tokenize(clean_text)
                 except:
                     return {}
-                sentiments = [] 
+                sentiments = []
                 scores = []
                 nscores = []
                 results = {'positive': {'count': 0, 'score': 0, 'nscore': 0},
                            'neutral': {'count': 0, 'score': 0, 'nscore': 0},
                            'negative': {'count': 0, 'score': 0, 'nscore': 0}}
-                
+
                 print
                 print Tcolors.ACT + " Checking block of text:"
                 for i, sentence in enumerate(sentences):
@@ -79,15 +79,15 @@ class Sentiment(object):
                     next = ""
                     score = 0
                     nscore = 0
-                    if i == 0 and i + 1 < len(sentences): 
-                        next = sentences[i+1] 
+                    if i == 0 and i + 1 < len(sentences):
+                        next = sentences[i+1]
                     elif i != 0 and i < len(sentences):
                         if i + 1 != len(sentences):
                             next = sentences[i+1]
-                        previous = sentences[i-1] 
-                     
+                        previous = sentences[i-1]
+
                     if self.debug: print Tcolors.ACT + " Analyzing subjectivity..."
-                    result = self.bootstrapping.classify(sentence, previous, next) 
+                    result = self.bootstrapping.classify(sentence, previous, next)
                     if result is None:
                         res = 'Not found!'
                     else:
@@ -95,8 +95,8 @@ class Sentiment(object):
                     if self.debug:
                         print Tcolors.RES + Tcolors.OKGREEN + " " + res + Tcolors.ENDC
                         print
-                    
-                    # If sentence is subjective 
+
+                    # If sentence is subjective
                     if result == 'subjective' or result is None:
                         # Proceed to polarity classification
                         if self.debug: print Tcolors.ACT + " Analyzing sentiment..."
@@ -105,37 +105,37 @@ class Sentiment(object):
                         if self.debug: print Tcolors.RES + Tcolors.OKGREEN + " " + sentiment + Tcolors.ENDC
                     # If sentence is objective
                     elif result == 'objective':
-                        sentiment = 'neutral'  
-                    
+                        sentiment = 'neutral'
+
                     # Collect high-confidence training instances for SVM classifier.
                     # After the training, SVM can be used to classify new sentences.
-                    #if sentiment != "neutral" and sentiment != "": 
+                    #if sentiment != "neutral" and sentiment != "":
                         #if sentiment != "neutral" and abs(nscore) >= 0.4:
                         #   self.total_sentences.append(sentence)
                         #   self.total_sentiments.append(sentiment)
-                        
+
                     # Store results to memory
                     sentiments.append(sentiment)
                     scores.append(score)
                     nscores.append(nscore)
-                    
+
                     # Update score
                     if results.has_key(sentiment):
                         results[sentiment]['nscore'] += nscore
                         results[sentiment]['score'] += score
-                        results[sentiment]['count'] += 1 
-                          
-                print       
+                        results[sentiment]['count'] += 1
+
+                print
                 print Tcolors.ACT + " Overall sentiment analysis:"
                 print Tcolors.BGH
                 print " Parts: ", len(sentences)
                 print " Sentiments: ", sentiments
-                print " Scores: ", scores 
+                print " Scores: ", scores
                 print " Results: ", "},\n\t    ".join((str)(results).split("}, "))
                 print Tcolors.C
 
                 pcount = results['positive']['count']
-                ncount = results['negative']['count'] 
+                ncount = results['negative']['count']
                 total = len(sentences)
                 print Tcolors.BG
                 print " subjective".ljust(16,"-") + "> %.2f" % ((float)(pcount + ncount)*100 / total) + "%"
@@ -146,8 +146,8 @@ class Sentiment(object):
                     count = results[sense]['count']
                     percentage = (float)(count) * 100 / (len(sentences))
                     print " " +sense.ljust(15,"-")+"> %.2f" % (percentage) + "%"
-                  
-                print Tcolors.C 
+
+                print Tcolors.C
                 ssum = sum(scores)
                 confidence = " (%.2f, %.2f)" % (ssum,sum(nscores))
                 final_sent = ""
@@ -168,14 +168,14 @@ class Sentiment(object):
                     print Tcolors.RES + Tcolors.OKGREEN +  " negative" + confidence + Tcolors.C
                     final_sent = "negative"
                 print Tcolors.C
-                
+
                 # Store results
                 total_result_hash = {'sentences' : sentences,
                                      'sentiments': sentiments,
                                      'scores'    : scores,
                                      'nscores'   : nscores,
                                      'results'   : results,
-                                      'final' : {final_sent:{'score':ssum,'nscore':sum(nscores)}}} 
+                                      'final' : {final_sent:{'score':ssum,'nscore':sum(nscores)}}}
         # Train SVM classifier
         # self.train_svm()
         return total_result_hash
@@ -192,6 +192,13 @@ class Sentiment(object):
         return text
 
 
+
+    def remove_special_unicode(self, text):
+        if isinstance(text, str):
+            text = text.decode("utf-8", "ignore")
+        re_pattern = re.compile(u'[\u2300-\u2BFF]', re.UNICODE)
+        filtered_string = re_pattern.sub('', text)
+        return filtered_string
 
     def normalize(self, text):
         """
@@ -212,6 +219,7 @@ class Sentiment(object):
                 final = text
 
         final = self.remove_emoji(final)
+        final = self.remove_special_unicode(final)
         return final
                 
     def train_svm(self):
@@ -219,10 +227,10 @@ class Sentiment(object):
             Train SVM and store data with pickle.
         """
         self.svm.train(self.total_sentences, self.total_sentiments)
-        t_output = open(self.svm_train_filename,'wb')
-        l_output = open(self.svm_label_filename,'wb')
-        pickle.dump(self.total_sentences,t_output)
-        pickle.dump(self.total_sentiments,l_output)
+        t_output = open(self.svm_train_filename, 'wb')
+        l_output = open(self.svm_label_filename, 'wb')
+        pickle.dump(self.total_sentences, t_output)
+        pickle.dump(self.total_sentiments, l_output)
         t_output.close()
         l_output.close()
 
