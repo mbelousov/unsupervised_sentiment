@@ -272,8 +272,10 @@ class PolarityClassifier:
         Disambiguate words in a sentence if only if the POS tag of the word matches
         the POS tag in the lexicon
         """ 
-        for (word, TAG) in self.words_pos_tags:   
+        for (word, TAG) in self.words_pos_tags:
             # Handle punctuation in word_tokenization
+            if not word:
+                continue
             if word[len(word)-1] in string.punctuation:                
                 word = word[0:(len(word)-1)]
             matched_tag = self.match_tags(TAG)

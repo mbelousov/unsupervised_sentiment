@@ -42,7 +42,7 @@ class StanfordPOSTagger:
             Method for tagging untagged sentences.
         """
         words = nltk.word_tokenize(sentence)
-        return self.pos_tagger.tag(words)
+        return [(w, t) for w, t in self.pos_tagger.tag(words) if w]
 
 
 
