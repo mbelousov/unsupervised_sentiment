@@ -3,14 +3,18 @@ unsupervised_sentiment
 ## Fork contributions
 * Wrapped into package so that it could be easily installed with ```easy_install``` or ```pip```.
 * Polarity shifting improvements.
+* Automatically remove emoji and special unicode characters from input.
 
 ### Stanford POS Tagger Example
 ```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from unsupervised_sentiment.sentiment import Sentiment
-from unsupervised_sentiment.pos import StanfordPOSTagger
+from unsupervised_sentiment.pos import StanfordPOSTagger, SequentialTagger
 sent_classifier = Sentiment(pos_tagger_class=StanfordPOSTagger)
 
-sent_classifier.analyze(['I hear voices and it is pretty scary.'])
+sent_classifier.analyze(['I hear voices and it is pretty scary😖😭'])
 ```
 ## Original version
 
