@@ -12,7 +12,7 @@ unsupervised_sentiment
 
 from unsupervised_sentiment.sentiment import Sentiment
 from unsupervised_sentiment.pos import StanfordPOSTagger, SequentialTagger
-sent_classifier = Sentiment(pos_tagger_class=StanfordPOSTagger)
+sent_classifier = Sentiment(pos_tagger=StanfordPOSTagger())
 
 sent_classifier.analyze(['I hear voices and it is pretty scary😖😭'])
 ```
