@@ -32,9 +32,13 @@ class Sentiment(object):
         from POS tagging are learning by experience.
     """
 
-    def __init__(self, debug=False, pos_tagger_class=SequentialTagger):
+    def __init__(self, debug=False, pos_tagger=None):
         self.debug = debug
-        self.pos_tagger = pos_tagger_class()
+        # self.pos_tagger = pos_tagger_class()
+        if pos_tagger:
+            self.pos_tagger = pos_tagger
+        else:
+            self.pos_tagger = SequentialTagger()
         self.hp_obj = HpObj(debug=self.debug)
         self.hp_subj = HpSubj(debug=self.debug)
         self.lexicon = self.hp_obj.lexicon
@@ -235,8 +239,8 @@ class Sentiment(object):
         l_output.close()
 
 if __name__ == '__main__':
-    from pos import StanfordPOSTagger
-    sentiment = Sentiment(pos_tagger_class=StanfordPOSTagger, debug=False)
+    from pos import StanfordPOSTagger, SequentialTagger
+    sentiment = Sentiment(pos_tagger=StanfordPOSTagger(), debug=False)
     if len(sys.argv) > 1:
         sentiment.analyze([sys.argv[1]]) 
     else:
