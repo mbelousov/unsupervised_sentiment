@@ -4643,7 +4643,7 @@ type=strongsubj len=1 word1=lionhearted pos1=adj stemmed1=n priorpolarity=positi
 type=strongsubj len=1 word1=listless pos1=adj stemmed1=n priorpolarity=negative
 type=weaksubj len=1 word1=literate pos1=adj stemmed1=n priorpolarity=positive
 type=strongsubj len=1 word1=litigious pos1=adj stemmed1=n priorpolarity=negative
-type=strongsubj len=1 word1=little pos1=adj stemmed1=n priorpolarity=negative
+type=weaksubj len=1 word1=little pos1=adj stemmed1=n priorpolarity=neutral
 type=strongsubj len=1 word1=little-known pos1=adj stemmed1=n priorpolarity=negative
 type=weaksubj len=1 word1=live pos1=adj stemmed1=n priorpolarity=positive
 type=strongsubj len=1 word1=lively pos1=adj stemmed1=n priorpolarity=positive
