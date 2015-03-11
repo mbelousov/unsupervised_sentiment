@@ -3,7 +3,8 @@ unsupervised_sentiment
 ## Fork contributions
 * Wrapped into package so that it could be easily installed with ```easy_install``` or ```pip```.
 * Polarity shifting improvements.
-* Automatically remove emoji and special unicode characters from input.
+* US-ASCII transliterations of Unicode text with ```unidecode```.
+* Removes emoji and special characters from input.
 
 ### Stanford POS Tagger Example
 ```python
@@ -14,7 +15,11 @@ from unsupervised_sentiment.sentiment import Sentiment
 from unsupervised_sentiment.pos import StanfordPOSTagger, SequentialTagger
 sent_classifier = Sentiment(pos_tagger=StanfordPOSTagger())
 
-sent_classifier.analyze(['I hear voices and it is pretty scary😖😭'])
+# example with emoji, negative sentiment
+sent_classifier.analyze(['I hear voices and it is pretty scary😖😭']) 
+
+# example with accents and text-emoticons, positive sentiment
+sent_classifier.analyze(["The soul and heart I hear in Beyoncé's voice is what I love.♥"]) 
 ```
 ## Original version
 
@@ -63,6 +68,7 @@ After installing them, you should be able to install the following packages: <br
 $ pip install nltk  
 $ pip install stemming
 $ pip install numpy
+$ pip install unidecode
 ```
 
 After you install nltk you will need some corpora to train the sequential POS tagger (pos.py) and the nltk tokenizer.
