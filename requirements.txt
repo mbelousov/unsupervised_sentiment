@@ -1,3 +1,4 @@
 nltk
 numpy
 stemming
+unidecode

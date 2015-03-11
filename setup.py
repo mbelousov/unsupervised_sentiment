@@ -16,6 +16,7 @@ setup(
         'nltk',
         'numpy',
         'stemming',
+        'unidecode',
     ],
     packages=['unsupervised_sentiment', 'unsupervised_sentiment.datasets'],
     package_dir={'unsupervised_sentiment': 'unsupervised_sentiment'},

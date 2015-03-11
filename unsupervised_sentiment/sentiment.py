@@ -22,6 +22,7 @@ from hp_classifiers import HpObj, HpSubj
 from polarity import PolarityClassifier  
 from replacer import RepeatReplacer
 from terminal_colors import Tcolors
+from unidecode import unidecode
 
 
 class Sentiment(object):
@@ -195,19 +196,18 @@ class Sentiment(object):
         text = highpoints.sub(u'', text)
         return text
 
-
-
-    def remove_special_unicode(self, text):
+    def translate_unicode(self, text):
         if isinstance(text, str):
             text = text.decode("utf-8", "ignore")
-        re_pattern = re.compile(u'[\u2300-\u2BFF]', re.UNICODE)
-        filtered_string = re_pattern.sub('', text)
-        return filtered_string
+        return unidecode(text).replace("[?]", "")
 
     def normalize(self, text):
         """
             Make some word improvements before feeding to the sentence tokenizer.
         """  
+        text = self.remove_emoji(text)
+        text = self.translate_unicode(text)
+
         rr = RepeatReplacer(self.lexicon)
         normalized_text = []
         final = None
@@ -222,8 +222,6 @@ class Sentiment(object):
         except:
                 final = text
 
-        final = self.remove_emoji(final)
-        final = self.remove_special_unicode(final)
         return final
                 
     def train_svm(self):
