@@ -5264,7 +5264,6 @@ type=strongsubj len=1 word1=offensively pos1=anypos stemmed1=n priorpolarity=neg
 type=strongsubj len=1 word1=offensiveness pos1=noun stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=officious pos1=adj stemmed1=n priorpolarity=negative
 type=weaksubj len=1 word1=offset pos1=verb stemmed1=y priorpolarity=positive
-type=strongsubj len=1 word1=oh pos1=anypos stemmed1=y priorpolarity=neutral
 type=weaksubj len=1 word1=okay pos1=adj stemmed1=n priorpolarity=positive
 type=strongsubj len=1 word1=okay pos1=anypos stemmed1=y priorpolarity=positive
 type=weaksubj len=1 word1=olympic pos1=adj stemmed1=n priorpolarity=neutral
@@ -6484,7 +6483,7 @@ type=weaksubj len=1 word1=scarce pos1=adj stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=scarcely pos1=anypos stemmed1=n priorpolarity=negative
 type=weaksubj len=1 word1=scarcity pos1=noun stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=scare pos1=verb stemmed1=y priorpolarity=negative
-type=strongsubj len=1 word1=scared pos1=adj stemmed1=n priorpolarity=negative
+type=strongsubj len=1 word1=scared pos1=anypos stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=scarier pos1=adj stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=scariest pos1=adj stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=scarily pos1=anypos stemmed1=n priorpolarity=negative
@@ -7344,9 +7343,9 @@ type=strongsubj len=1 word1=terrific pos1=anypos stemmed1=y priorpolarity=positi
 type=strongsubj len=1 word1=terrifically pos1=anypos stemmed1=n priorpolarity=positive
 type=strongsubj len=1 word1=terrified pos1=adj stemmed1=n priorpolarity=positive
 type=strongsubj len=1 word1=terrify pos1=verb stemmed1=y priorpolarity=positive
-type=strongsubj len=1 word1=terrifying pos1=adj stemmed1=n priorpolarity=positive
-type=strongsubj len=1 word1=terrifying pos1=anypos stemmed1=n priorpolarity=positive
-type=strongsubj len=1 word1=terrifyingly pos1=anypos stemmed1=n priorpolarity=positive
+type=strongsubj len=1 word1=terrifying pos1=adj stemmed1=n priorpolarity=negative
+type=strongsubj len=1 word1=terrifying pos1=anypos stemmed1=n priorpolarity=negative
+type=strongsubj len=1 word1=terrifyingly pos1=anypos stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=terror pos1=noun stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=terror-genic pos1=adj stemmed1=n priorpolarity=negative
 type=strongsubj len=1 word1=terror-genic pos1=noun stemmed1=n priorpolarity=negative
